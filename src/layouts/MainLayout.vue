@@ -36,8 +36,8 @@ export default {
   },
   async mounted() {
     if(!Object.keys(this.$store.getters.info).length) {
-      console.log(this.$store, 'this.$store.getters.info')
       await this.$store.dispatch('fetchInfo')
+
     }
   },
 };

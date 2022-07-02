@@ -8,6 +8,7 @@ import store from './store';
 import 'materialize-css/dist/js/materialize.min';
 import Loader from '@/components/app/Loader'
 import { initializeApp } from "firebase/app";
+import { onAuthStateChanged, getAuth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBpCFWvX5zqTnuZfbbs9aYiz0WOSQu7bqE",
@@ -21,19 +22,21 @@ const firebaseConfig = {
 };
 
 const appFire = initializeApp(firebaseConfig);
-// const database = getDatabase(appFire);
-// const auth = getAuth(firebaseConfig)
+const auth = getAuth(appFire)
+let app;
+onAuthStateChanged(auth, user => {
+  if(!app) {
+    app = createApp(App)
+    app.component('Loader', Loader)
+    app.use(store)
+    app.use(router)
+    app.use(messagePlugin)
+    app.mount('#app');  
+  }
+});
 
-// let app;
-// onAuthStateChanged(() => {
-//   if(!app) {
-  const app = createApp(App)
-  app.component('Loader', Loader)
-  app.use(store)
-  app.use(router)
-  app.use(messagePlugin)
-  app.mount('#app');
-//   }
-// })
+
+  
+
 
 

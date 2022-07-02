@@ -24,9 +24,7 @@ export default {
 
                 commit('setInfo', info)
             } catch (e) {
-
             }
-            
         }
     },
     getters: {
