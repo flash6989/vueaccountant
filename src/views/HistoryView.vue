@@ -4,8 +4,9 @@
       <h3>История записей</h3>
     </div>
 
-    <div class="history-chart">
-      <canvas></canvas>
+    <div class="history-chart" v-if="!loading">
+      <PieChart :width="400" :height="400" :chartData="chartData"/>
+      <!-- <canvas></canvas> -->
     </div>
     <Loader v-if="loading" />
     <p class="center" v-else-if="!records.length">
@@ -14,13 +15,14 @@
     </p>
     <section v-else>
       <HistoryTable :records="records"/>
-      <Paginate />
     </section>
+    
   </div>
 </template>
 
 <script>
 import HistoryTable from '@/components/HistoryTable.vue'
+import PieChart from '@/components/PieChart.vue'
 
 export default {
   name: 'history',
@@ -29,10 +31,29 @@ export default {
       loading: true,
       records: [],
       categories: [],
+      chartData: {
+        labels: [],
+        datasets: [
+          {
+            backgroundColor: [],
+            label: 'Расходы по категории',
+            data: [40, 20, 80, 10]
+          }
+        ]
+      },
     }
   },
   components: {
+    PieChart,
     HistoryTable
+  },
+  methods: {
+    pageChangeHandler() {
+      console.log('paginate')
+    },
+    generateColor() {
+      return '#' + Math.floor(Math.random() * 16777215).toString(16)
+    }
   },
   async mounted() {
     // this.records = await this.$store.dispatch('fetchRecords')
@@ -47,6 +68,18 @@ export default {
         typeText: record.type === 'income' ? 'Доход' : 'Расход',
       }
     }) 
+    this.chartData.labels = this.categories.map(c => c.title)
+    this.chartData.datasets[0].data = this.categories.map(c => {
+      return this.records.reduce((total, r) => {
+        if(r.categoryId === c.id && r.type ==='outcome') {
+          total += +r.amount
+        }
+        return total
+      }, 0)
+    })
+    this.categories.forEach(() => {
+      this.chartData.datasets[0].backgroundColor.push(this.generateColor())
+    } )
     this.loading = false;
   }
 }

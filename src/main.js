@@ -10,7 +10,6 @@ import Loader from '@/components/app/Loader'
 import { initializeApp } from "firebase/app";
 import { onAuthStateChanged, getAuth } from "firebase/auth";
 import tooltipDirective from './directives/tooltip.directive';
-import Paginate from 'vuejs-paginate'
 
 const firebaseConfig = {
   apiKey: "AIzaSyBpCFWvX5zqTnuZfbbs9aYiz0WOSQu7bqE",
@@ -31,7 +30,6 @@ onAuthStateChanged(auth, user => {
     app = createApp(App)
     app.directive('tooltip', tooltipDirective)
     app.component('Loader', Loader)
-    app.component('Paginate', Paginate)
     app.use(store)
     app.use(router)
     app.use(messagePlugin)
