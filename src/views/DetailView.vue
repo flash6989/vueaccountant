@@ -52,7 +52,7 @@ export default {
     const id = this.$route.params.id
     const record = await this.$store.dispatch('fetchRecordById', id)
     const category = await this.$store.dispatch('fetchCategoryById', record.categoryId)
-    console.log( category, 'record, category')
+    console.log(record, category, 'record, category')
     this.record = {
       ...record,
       categoryName: category.title

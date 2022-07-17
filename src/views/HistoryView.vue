@@ -60,14 +60,16 @@ export default {
 
     const records = await this.$store.dispatch('fetchRecords')
     this.categories = await this.$store.dispatch('fetchCategories')
-    this.records = records.map(record => {
+    this.records = records.map((record, idx) => {
       return {
         ...record,
         categoryName: this.categories.find(c => c.id === record.categoryId).title,
         typeClass: record.type === 'income' ? 'green' : 'red',
         typeText: record.type === 'income' ? 'Доход' : 'Расход',
+        recordNumber: idx + 1,
       }
     }) 
+    this.records = this.records.reverse()
     this.chartData.labels = this.categories.map(c => c.title)
     this.chartData.datasets[0].data = this.categories.map(c => {
       return this.records.reduce((total, r) => {

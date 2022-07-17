@@ -12,8 +12,8 @@
     </thead>
 
     <tbody>
-    <tr v-for="(record, idx) of records" :key="record.id">
-      <td>{{idx + 1}}</td>
+    <tr v-for="(record) of records" :key="record.id">
+      <td>{{record.recordNumber}}</td>
       <td>{{record.amount + ' ₽'}}</td>
       <td>
         {{ new Intl.DateTimeFormat('ru-RU', {
